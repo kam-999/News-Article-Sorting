@@ -1,0 +1,21 @@
+ipykernel
+pandas
+numpy
+matplotlib
+plotly
+seaborn
+scipy
+scikit-learn==1.5.1
+pymongo
+from_root
+dill
+PyYAML
+boto3
+mypy-boto3-s3
+botocore
+fastapi
+uvicorn
+jinja2
+python-multipart
+nltk
+-e .
