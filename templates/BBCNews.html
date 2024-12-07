@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BBC News Text Classifier</title>
+    <title>News Article Classifier</title>
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
   </head>
   <body>
     <nav class="navbar navbar-light bg-light static-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">BBC News Text Classifier</a>
+        <a class="navbar-brand" href="/"> News Article Classifier</a>
       </div>
     </nav>
     <section>
@@ -28,17 +28,33 @@
         <div class="text-center text-black mt-5">
           <h2 class="display-4 fw-bolder">Classification Result: {{ context }}</h2>
         </div>
+        <div class="container mt-5">
+          <h3>Logs</h3>
+          <textarea class="form-control" id="logs" rows="10" readonly>{{ logs }}</textarea>
+        </div>
       </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <script>
-      $(".input").focus(function () {
-        $(this).parent().addClass("focus");
-      }).blur(function () {
-        if ($(this).val() === '') {
-          $(this).parent().removeClass("focus");
+      async function fetchLogs() {
+        try {
+          const response = await fetch('/logs');
+          const data = await response.json();
+
+          if (data.status) {
+            document.getElementById('logs').value = data.logs;
+          } else {
+            document.getElementById('logs').value = "Error fetching logs: " + data.error;
+          }
+        } catch (err) {
+          document.getElementById('logs').value = "Error fetching logs: " + err;
         }
-      });
+      }
+
+      // Automatically fetch logs if logs are empty
+      if (!document.getElementById('logs').value) {
+        fetchLogs();
+      }
     </script>
   </body>
 </html>
